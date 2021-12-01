@@ -1,0 +1,10 @@
+Package: com.ryannair05.cask3
+Name: Cask 3
+Architecture: iphoneos-arm
+Description: Animated table scrolling
+Maintainer: Ryan Nair
+Author: Ryan Nair
+Section: Tweaks
+Depends: ${ORION}, firmware (>= 14.0)
+Replaces: com.ryannair05.cask2
+Version: 1.0.0

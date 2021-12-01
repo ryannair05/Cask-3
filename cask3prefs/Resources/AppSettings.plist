@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>App Settings</string>
+			<key>footerText</key>
+			<string>This app must be killed for its changes to take effect.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<integer>11</integer>
+			<key>defaults</key>
+			<string>com.ryannair05.cask3</string>
+			<key>key</key>
+			<string>style</string>
+			<key>label</key>
+			<string>Style</string>
+			<key>PostNotification</key>
+			<string>com.ryannair05.cask3/prefsupdated</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validValues</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+				<integer>2</integer>
+				<integer>3</integer>
+				<integer>4</integer>
+				<integer>5</integer>
+				<integer>6</integer>
+				<integer>7</integer>
+				<integer>8</integer>
+				<integer>9</integer>
+				<integer>10</integer>
+				<integer>11</integer>
+				<integer>12</integer>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>None</string>
+				<string>Fade</string>
+				<string>Flip</string>
+				<string>Bounce</string>
+				<string>Color</string>
+				<string>Permanent Color</string>
+				<string>Glitch</string>
+				<string>Helix</string>
+				<string>Rotate</string>
+				<string>Zoom</string>
+				<string>Drop</string>
+				<string>Stretch</string>
+				<string>Slide</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkListCell</string>
+			<key>default</key>
+			<real>0.5</real>
+			<key>defaults</key>
+			<string>com.ryannair05.cask3</string>
+			<key>key</key>
+			<string>duration</string>
+			<key>label</key>
+			<string>Duration</string>
+			<key>PostNotification</key>
+			<string>com.ryannair05.cask3/prefsupdated</string>
+			<key>detail</key>
+			<string>PSListItemsController</string>
+			<key>validValues</key>
+			<array>
+				<real>0.1</real>
+				<real>0.25</real>
+				<real>0.33333333</real>
+				<real>0.4</real>
+				<real>0.5</real>
+				<real>0.66666667</real>
+				<real>0.75</real>
+				<real>0.9</real>
+				<real>1</real>
+				<real>1.25</real>
+			</array>
+			<key>validTitles</key>
+			<array>
+				<string>100 ms</string>
+				<string>250 ms</string>
+				<string>333 ms</string>
+				<string>400 ms</string>
+				<string>500 ms</string>
+				<string>667 ms</string>
+				<string>750 ms</string>
+				<string>900 ms</string>
+				<string>1000 ms</string>
+				<string>1250 ms</string>
+			</array>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.ryannair05.cask3</string>
+			<key>key</key>
+			<string>animateAlways</string>
+			<key>label</key>
+			<string>Animate Fresh Views</string>
+			<key>PostNotification</key>
+			<string>com.ryannair05.cask3/prefsupdated</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Developed By </string>
+		</dict>
+		<dict>
+			<key>cellClass</key>
+			<string>cask3prefs.CaskTwitterCell</string>
+			<key>label</key>
+			<string>Ryan Nair</string>
+			<key>accountName</key>
+			<string>@ryannair05</string>
+		</dict>
+	</array>
+	<key>title</key>
+	<string>Cask 3</string>
+</dict>
+</plist>
