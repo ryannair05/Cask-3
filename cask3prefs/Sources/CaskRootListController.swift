@@ -2,19 +2,14 @@ import Preferences
 
 class CaskRootListController: PSListController {
 
-    var titleLabel: UILabel!
-    var iconView: UIImageView!
-    var headerView: UIView!
+    let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+    let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
 
     override init(forContentSize contentSize: CGSize) {
         super.init(forContentSize: contentSize)
         
         navigationItem.titleView = UIView()
-
-        iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        headerView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
-        titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-
         titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Cask 3"
@@ -86,43 +81,7 @@ class CaskRootListController: PSListController {
     }
 
     var appSpecifiers: [PSSpecifier] {
-        let displayIdentifiers = SBSCopyDisplayIdentifiers().takeRetainedValue() as! Set<String>
-
-        var apps: [String: String] = [:]
-
-        for appIdentifier in displayIdentifiers {
-            if let appName = SBSCopyLocalizedApplicationNameForDisplayIdentifier(appIdentifier) {
-                apps[appIdentifier] = appName
-            }
-        }
-
-        let dataSourceUser = trimDataSource(apps)
-
-        var specifiers: [PSSpecifier] = []
-        let groupSpecifier = PSSpecifier.groupSpecifier(withName: "Per-app Customization:")
-        specifiers.append(groupSpecifier!)
-
-        for (bundleIdentifier, displayName) in dataSourceUser.sorted(by: { $0.value < $1.value }) {
-            if let spe = PSSpecifier.preferenceSpecifierNamed(displayName, target: self, set: nil, get: nil, detail: CaskAppSettingsController.self, cell: PSCellType.linkListCell, edit: nil) {
-                spe.setProperty("IBKWidgetSettingsController", forKey: "detail")
-                spe.setProperty(true, forKey: "isController")
-                spe.setProperty(true, forKey: "enabled")
-                spe.setProperty(bundleIdentifier, forKey: "bundleIdentifier")
-                spe.setProperty(bundleIdentifier, forKey: "appIDForLazyIcon")
-                spe.setProperty(true, forKey: "useLazyIcons")
-
-                specifiers.append(spe)
-            }
-        }
-
-        return specifiers
-    }
-
-    func trimDataSource(_ dataSource: [String : String]) -> [String : String] {
-
-        var mutable = dataSource
-
-        let bannedIdentifiers = [
+        let bannedIdentifiers: Set<String> = [
             "com.apple.sidecar",
             "com.apple.compass",
             "com.apple.AppStore",
@@ -130,12 +89,31 @@ class CaskRootListController: PSListController {
             "com.apple.calculator",
             "com.apple.tv"
         ]
+        
+        var specifiers: [PSSpecifier] = []
+        let groupSpecifier = PSSpecifier.groupSpecifier(withName: "Per-app Customization:").unsafelyUnwrapped
+        specifiers.append(groupSpecifier)
 
-        for key in bannedIdentifiers {
-            mutable.removeValue(forKey: key)
-        }
+        let dataSourceUser = SBSCopyDisplayIdentifiers().takeRetainedValue() as! Set<String>
+        dataSourceUser
+            .compactMap { appIdentifier -> (String, String)? in
+                guard !bannedIdentifiers.contains(appIdentifier), let appName = SBSCopyLocalizedApplicationNameForDisplayIdentifier(appIdentifier) else { return nil }
+                return (appIdentifier, appName)
+            }
+            .sorted(by: { $0.1 < $1.1 })
+            .forEach { bundleIdentifier, displayName in
+                if let spe = PSSpecifier.preferenceSpecifierNamed(displayName, target: self, set: nil, get: nil, detail: CaskAppSettingsController.self, cell: PSCellType.linkListCell, edit: nil) {
+                    spe.setProperty("IBKWidgetSettingsController", forKey: "detail")
+                    spe.setProperty(true, forKey: "isController")
+                    spe.setProperty(true, forKey: "enabled")
+                    spe.setProperty(bundleIdentifier, forKey: "bundleIdentifier")
+                    spe.setProperty(bundleIdentifier, forKey: "appIDForLazyIcon")
+                    spe.setProperty(true, forKey: "useLazyIcons")
+                    specifiers.append(spe)
+                }
+            }
 
-        return mutable
+        return specifiers
     }
 
     override var specifiers: NSMutableArray? {
