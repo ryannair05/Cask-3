@@ -7,4 +7,4 @@ Author: Ryan Nair
 Section: Tweaks
 Depends: ${ORION}, firmware (>= 14.0)
 Replaces: com.ryannair05.cask2
-Version: 1.0.1
+Version: 1.0.2

@@ -42,6 +42,9 @@
 				<integer>10</integer>
 				<integer>11</integer>
 				<integer>12</integer>
+				<integer>13</integer>
+				<integer>14</integer>
+				<integer>15</integer>
 			</array>
 			<key>validTitles</key>
 			<array>
@@ -58,6 +61,9 @@
 				<string>Drop</string>
 				<string>Stretch</string>
 				<string>Slide</string>
+				<string>Shake</string>
+				<string>Swing</string>
+				<string>Jiggle</string>
 			</array>
 		</dict>
 		<dict>

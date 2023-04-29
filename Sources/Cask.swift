@@ -14,6 +14,9 @@ enum AnimationStyle: Int {
     case drop
     case stretch
     case slide
+    case shake
+    case swing
+    case jiggle
 }
 
 struct Cask {
@@ -48,7 +51,7 @@ struct Cask {
             animation = { result in
                 let original = result.transform
                 result.transform = CGAffineTransform(scaleX: 0.01, y: 1.0)
-                UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction, .allowAnimatedContent, .curveEaseOut], animations: {
+                UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 10.0, options: [.allowUserInteraction, .allowAnimatedContent, .curveEaseOut], animations: {
                     result.transform = original
                 })
             }
@@ -135,6 +138,34 @@ struct Cask {
                 UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction, .allowAnimatedContent, .curveEaseOut], animations: {
                     result.frame = original
                 })
+            }
+        case .shake:
+            animation = { result in
+                let animation = CAKeyframeAnimation(keyPath: "position.x")
+                animation.values = [0, 10, -10, 10, -5, 5, -5, 0 ]
+                animation.keyTimes = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]
+                animation.duration = duration
+                animation.isAdditive = true
+                result.layer.add(animation, forKey: "shake")
+            }
+        case .swing:
+            animation = { result in
+                let animation = CAKeyframeAnimation(keyPath: "position.x")
+                animation.values = [0, 40, -50, 30, 0]
+                animation.keyTimes = [0, 0.16, 0.5, 0.83, 1]
+                animation.duration = duration
+                animation.isAdditive = true
+                result.layer.add(animation, forKey: "swing")
+            }
+        case .jiggle:
+            animation = { result in
+                let animation =   CAKeyframeAnimation(keyPath: "transform.rotation.z")
+                animation.values = [0, -0.075, 0.075, -0.075, 0.075, 0]
+                animation.duration = duration
+                animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                animation.isAdditive = true
+                animation.repeatCount = 1
+                result.layer.add(animation, forKey: "jiggle")
             }
         }
     }
