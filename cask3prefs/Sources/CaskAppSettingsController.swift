@@ -1,4 +1,5 @@
 import Preferences
+import libroot
 
 class CaskAppSettingsController: PSListController {
 
@@ -38,7 +39,7 @@ class CaskAppSettingsController: PSListController {
             return super.readPreferenceValue(specifier)
         }
 
-        let path = "/var/mobile/Library/Preferences/\(defaultPath).plist"
+        let path = jbRootPath("/var/mobile/Library/Preferences/\(defaultPath).plist")
         let settings = NSDictionary(contentsOfFile: path)
 
         if let appSettings = settings?.object(forKey: bundleIdentifier) as? NSDictionary {
@@ -53,7 +54,7 @@ class CaskAppSettingsController: PSListController {
             return
         }
 
-        let path = "/var/mobile/Library/Preferences/\(specifier.properties["defaults"] as! String).plist"
+        let path = jbRootPath("/var/mobile/Library/Preferences/\(specifier.properties["defaults"] as! String).plist")
         let prefs = NSMutableDictionary(contentsOfFile:path) ?? NSMutableDictionary()
         let appPrefs = prefs.object(forKey: bundleIdentifier) as? NSMutableDictionary ?? NSMutableDictionary()
 
@@ -62,9 +63,8 @@ class CaskAppSettingsController: PSListController {
 
         prefs.write(toFile: path, atomically: true)
         
-        if let postNotification = specifier.properties["PostNotification"] {
-            let notificationName = CFNotificationName(postNotification as! CFString)
-            CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, nil, nil, true)
+        if let postNotification = specifier.properties["PostNotification"] as? CFNotificationName {
+            CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), postNotification, nil, nil, true)
         }
     }
 

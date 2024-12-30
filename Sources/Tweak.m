@@ -1,5 +1,5 @@
-#import <Orion/Orion.h>
+#import <Cask3-Swift.h>
 
 __attribute__((constructor)) static void init() {
-    orion_init();
+    cask_init();
 }

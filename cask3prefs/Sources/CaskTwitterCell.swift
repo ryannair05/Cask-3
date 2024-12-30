@@ -70,8 +70,17 @@ class CaskTwitterCell: PSTableCell {
 
         detailTextLabel!.text = user
 
-        DispatchQueue.global(qos: .default).async(execute: {
-            if let url = URL(string: "https://pbs.twimg.com/profile_images/1161080936836018176/4GUKuGlb_200x200.jpg") {
+        let url = URL(string: "https://pbs.twimg.com/profile_images/1161080936836018176/4GUKuGlb_200x200.jpg").unsafelyUnwrapped
+
+        if #available(iOS 15, *) {
+            UIImage._load(from: url) { image in
+                Task.detached { @MainActor in
+                    self.avatarImage = image
+                }
+            }
+        }
+        else {
+            DispatchQueue.global(qos: .default).async(execute: {
                 let request = URLRequest(url: url) 
                     URLSession.shared.dataTask(with: request, completionHandler: { _data, _response, _error in
                     guard let data = _data, _error == nil else {
@@ -83,8 +92,8 @@ class CaskTwitterCell: PSTableCell {
                     })
 
                 }).resume()
-            }
-        })
+            })
+        }
     }
 
     private func _url(forUsername user: String) -> URL {

@@ -21,7 +21,7 @@ enum AnimationStyle: Int {
 
 struct Cask {
     let animateAlways: Bool
-    let animation: (UITableViewCell) -> Void
+    let animation: @MainActor (UITableViewCell) -> Void
 
     init(animStyle: AnimationStyle, duration: Double, animateAlways: Bool) {
         self.animateAlways = animateAlways

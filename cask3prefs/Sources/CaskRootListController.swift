@@ -1,4 +1,5 @@
 import Preferences
+import libroot
 
 class CaskRootListController: PSListController {
 
@@ -16,14 +17,15 @@ class CaskRootListController: PSListController {
         navigationItem.titleView!.addSubview(titleLabel)
        
         iconView.contentMode = .scaleAspectFit
-        iconView.image = UIImage(contentsOfFile: "/Library/PreferenceBundles/cask3prefs.bundle/icon@3x.png")
+       
+        iconView.image = UIImage(contentsOfFile: jbRootPath("/Library/PreferenceBundles/cask3prefs.bundle/icon@3x.png"))
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.alpha = 0.0
         navigationItem.titleView!.addSubview(iconView)
        
         let headerImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 250))
         headerImageView.contentMode = .scaleAspectFill
-        headerImageView.image = UIImage(contentsOfFile: "/Library/PreferenceBundles/cask3prefs.bundle/banner.png")
+        headerImageView.image = UIImage(contentsOfFile: jbRootPath("/Library/PreferenceBundles/cask3prefs.bundle/banner.png"))
         headerImageView.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(headerImageView)
 
@@ -137,14 +139,14 @@ class CaskRootListController: PSListController {
             return super.readPreferenceValue(specifier)
         }
 
-        let path = "/var/mobile/Library/Preferences/\(defaultPath).plist"
+        let path = jbRootPath("/var/mobile/Library/Preferences/\(defaultPath).plist")
         let settings = NSDictionary(contentsOfFile: path)
 
         return settings?[specifier.property(forKey: "key") as Any] ?? specifier.property(forKey: "default")
     }
     
     override func setPreferenceValue(_ value: Any!, specifier: PSSpecifier!) {
-        let path = "/var/mobile/Library/Preferences/\(specifier.properties["defaults"] as! String).plist"
+        let path = jbRootPath("/var/mobile/Library/Preferences/\(specifier.properties["defaults"] as! String).plist")
         let prefs = NSMutableDictionary(contentsOfFile:path) ?? NSMutableDictionary()
         
         prefs.setValue(value, forKey: specifier.property(forKey: "key") as! String)

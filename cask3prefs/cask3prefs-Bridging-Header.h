@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+#import <UIKit/UIImage.h>
 
 #if __cplusplus
 extern "C" {
@@ -10,3 +10,7 @@ extern "C" {
 #if __cplusplus
 }
 #endif
+
+@interface UIImage (Private)
++ (void)_loadImageFromURL:(NSURL *)arg1 completionHandler:(void (^)(UIImage *))arg2 API_AVAILABLE(ios(15));
+@end
